@@ -4,67 +4,73 @@ import java.util.Arrays;
 
 public class Algorithm {
     public static void main(String[] args) {
-        int[] arr = {8,7,6,5,4,6,5,4};
-        mergeSort(arr, 8);
+        int[] arr = { 8, 7, 6, 5, 4, 6, 5, 4 };
+        mergeSort(arr);
         System.out.println(Arrays.toString(arr));
-
+        // outputs [4, 4, 5, 5, 6, 6, 7, 8]
     }
 
-    public static void mergeSort(int[] arr, int length) {
-        mergeSortAlgo(arr, 0, length - 1);
+    /*
+     * merge sort algorithm is a divide and merge algorithm where we divide the
+     * array into sub array and sort them as we go up, it uses a recursive
+     * function.
+     */
+    private static void mergeSort(int[] arr) {
+        int l = 0;
+        int h = arr.length - 1;
+        mergeSortAlgo(arr, l, h);
     }
 
-    public static void mergeSortAlgo(int[] arr, int l, int h) {
-        if(l == h) return;
+    private static void mergeSortAlgo(int[] arr, int l, int h) {
+        if (l == h)
+            return;
         int mid = (l + h) / 2;
         mergeSortAlgo(arr, l, mid);
         mergeSortAlgo(arr, mid + 1, h);
         merge(arr, l, h, mid);
     }
 
-    public static void merge(int[] arr, int l, int h, int mid) {
-        int k = l;
-        int m = mid + 1;
+    private static void merge(int[] arr, int l, int h, int mid) {
+        // starting indexes for both right and left arrays
+        int leftIndex = l;
+        int rightIndex = mid + 1;
+        // arrays sizes for looping through the arrays
+        int leftArraySize = mid - l + 1;
+        int rightArraySize = h - mid;
 
-        int i = mid - l + 1;
-        int j = h - mid;
-
-        int index = 0;
-        int[] answer = new int[h - l + 1];
-        
-        while (i > 0 && j > 0) {
-            if (arr[k] <= arr[m]) {
-                answer[index] = arr[k];
-                i--;
-                k++;
+        int index = 0;// an index tracker for the newarray
+        int[] newArray = new int[h - l + 1];
+        while (leftArraySize > 0 && rightArraySize > 0) {
+            if (arr[leftIndex] <= arr[rightIndex]) {
+                newArray[index] = arr[leftIndex];
                 index++;
+                leftIndex++;
+                leftArraySize--;
             } else {
-                answer[index] = arr[m];
-                j--;
-                m++;
+                newArray[index] = arr[rightIndex];
                 index++;
+                rightIndex++;
+                rightArraySize--;
             }
         }
-
-        while (i > 0) {
-            answer[index] = arr[k];
-            k++;
-            i--;
+        // filling out left values from both arrays to the new array
+        while (leftArraySize > 0) {
+            newArray[index] = arr[leftIndex];
             index++;
+            leftIndex++;
+            leftArraySize--;
         }
-        while(j>0){
-            answer[index] = arr[m];
-            m++;
-            j--;
+        while (rightArraySize > 0) {
+            newArray[index] = arr[rightIndex];
             index++;
+            rightIndex++;
+            rightArraySize--;
         }
-
-        int g = 0;
+        // replacing the old array with the new sorted array
+        int i = 0;
         for (int n = l; n <= h; n++) {
-            arr[n] = answer[g];
-            g++;
+            arr[n] = newArray[i];
+            i++;
         }
-
     }
-
 }
