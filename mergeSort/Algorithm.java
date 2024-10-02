@@ -38,7 +38,7 @@ public class Algorithm {
         int leftArraySize = mid - l + 1;
         int rightArraySize = h - mid;
 
-        int index = 0;// an index tracker for the newarray
+        int index = 0;// an index tracker for the new array
         int[] newArray = new int[h - l + 1];
         while (leftArraySize > 0 && rightArraySize > 0) {
             if (arr[leftIndex] <= arr[rightIndex]) {
